@@ -1,0 +1,13 @@
+{
+  "name": "acumulus",
+  "description": "",
+  "version": "0.0.0",
+  "main": "acumulus.js",
+  "devDependencies": {
+    "chai": "*",
+    "mocha": "*"
+  },
+  "scripts": {
+    "test": "mocha  --reporter spec"
+  }
+}
