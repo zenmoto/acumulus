@@ -10,20 +10,13 @@
  * Module exports
  */
 
-(function (global) {
+(function () {
 
     if (module) {
         module.exports = acumulus;
     } else {
         this.acumulus = acumulus;
     }
-
-    /**
-     * @param {}
-     * @return {}
-     * @api public
-     */
-
 
     function acumulus() {
         var obj = {};
@@ -40,6 +33,9 @@
         function update() {
             current = {};
             data.push(current);
+            while (data.length > settings.max_samples) {
+                data.shift();
+            }
             obj.length = data.length;
         }
 
@@ -70,6 +66,10 @@
             return ary.reduce(add, 0);
         }
 
+        obj.stop = stop;
+        obj.start = start;
+        obj.clear = restart;
+
         obj.sample_interval = function(value) {
             if (value == undefined) {
                 return settings.sample_interval;
@@ -78,7 +78,16 @@
                 restart();
                 return obj;
             }
-        }
+        };
+
+        obj.max_samples = function(value) {
+            if (value == undefined) {
+                return settings.max_samples;
+            } else {
+                settings.max_samples = value;
+                return obj;
+            }
+        };
 
         obj.add = function (key, value) {
             current[key] = (current[key] || 0) + (typeof value === 'number' ? value : 1);
@@ -89,20 +98,55 @@
             return get_value(current, key);
         };
 
-        obj.series = function(key) {
+        obj.series = function(key, num_elems) {
             // TODO: Figure out how to factor out this function creation
-            return data.map(function(e) {
+            var dataset = num_elems ? data.slice(num_elems * -1) : data;
+            return dataset.map(function(e) {
                 return get_value(e, key);
             })
         };
 
-        obj.sum = function(key) {
-            return sum(obj.series(key));
+        obj.sum = function(key, num_elems) {
+            return sum(obj.series(key, num_elems));
         };
+
+        function top_reduction_fun(total, elem) {
+            for (var e in elem) {
+                if (elem.hasOwnProperty(e)) {
+                    if (total[e]) {
+                        total[e] += elem[e];
+                    } else {
+                        total[e] = elem[e];
+                    }
+                }
+            }
+            return total;
+        }
+
+        obj.sum_all = function() {
+            var values = data.reduce(top_reduction_fun, {});
+            return Object.keys(values).map(function(v) {
+                return {series: v, value: values[v]};
+            }).sort(function(a, b) {
+                if (a.value < b.value) {
+                    return 1;
+                }
+                if (b.value < a.value) {
+                    return -1;
+                }
+                return 0;
+            });
+        };
+
+        obj.top = function(elems) {
+            return obj.sum_all().slice(0, elems);
+        };
+
+
 
 
         start();
 
         return obj;
     }
-})(this);
+})();
