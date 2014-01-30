@@ -1,6 +1,6 @@
 # acumulus
 
-[![Build Status](https://secure.travis-ci.org/user/acumulus.png?branch=master)](http://travis-ci.org/user/acumulus)
+[![Build Status](https://secure.travis-ci.org/zenmoto/acumulus.png?branch=master)](http://travis-ci.org/user/acumulus)
 
 
 ## Installation
