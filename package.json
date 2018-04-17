@@ -2,6 +2,11 @@
   "name": "acumulus",
   "description": "",
   "version": "0.0.0",
+  "license": "MIT-0",
+  "repository" :
+  { "type" : "git"
+  , "url" : "https://github.com/npm/npm.git"
+  },
   "main": "acumulus.js",
   "devDependencies": {
     "chai": "*",

@@ -142,9 +142,6 @@
             return obj.sum_all().slice(0, elems);
         };
 
-
-
-
         start();
 
         return obj;

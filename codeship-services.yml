@@ -1,0 +1,4 @@
+lib:
+    build: .
+    dockerfile: ci/Dockerfile
+    encrypted_env_file: ci/env.encrypted
