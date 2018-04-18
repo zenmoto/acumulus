@@ -1,0 +1,5 @@
+- service: lib
+  command: npm test
+- service: lib
+  tag: master
+  command: ./ci/publish.sh

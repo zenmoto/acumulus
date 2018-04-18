@@ -12,11 +12,12 @@ describe('acumulus', function () {
     });
     it('is defined', function () {
         expect(acumulus).to.be.a('function');
-        var a = acumulus();
-        expect(a).to.be.an('object');
-        expect(a.sample_interval).to.be.a('function');
-        expect(a.sample_interval(50)).to.be.an('object');
-        expect(a.sample_interval()).to.equal(50);
+        var a2 = acumulus();
+        expect(a2).to.be.an('object');
+        expect(a2.sample_interval).to.be.a('function');
+        expect(a2.sample_interval(50)).to.be.an('object');
+        expect(a2.sample_interval()).to.equal(50);
+        a2.stop();
     });
 
     it('has a length', function(done) {
